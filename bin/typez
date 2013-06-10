@@ -1,0 +1,73 @@
+#!/usr/bin/env ruby
+$:.push(File.expand_path("../../lib", __FILE__))
+require "typez/aws/compute/price"
+require "typez/aws/compute/instance_type"
+include Typez::AWS::Compute
+
+region = "eu-west-1"
+rate = 1.0
+refresh = false
+require "optparse"
+opts = OptionParser.new do |o|
+  o.on("-r REGION", "--region", "AWS region to use. default: #{region}") do |value|
+    region = value
+  end
+
+  o.on("-e RATE", "--exchange-rate", Float, "Rate to be used to divide prices. default: #{rate}") do |value|
+    rate = value
+  end
+
+  o.on("--refresh", "Refresh price list") do
+    refresh = true
+  end
+end
+opts.parse(ARGV)
+
+def format_price(raw, rate = 1.0)
+  return "-" if raw.nil?
+  "%.03f" % [raw / rate]
+end
+
+def print_rows(*rows)
+  puts rows.flatten.join("\t")
+end
+
+def price_columns(price, rate)
+  return %w(- -) if price.nil?
+  [format_price(price.hourly_rate, rate), format_price(price.monthly_rate, rate)]
+end
+
+if refresh || !Price.fetched?
+  Price.update!
+end
+
+prices = Price.by_instance_type
+require "typez/cli/table"
+table = Typez::CLI::Table.new
+table << [:region, region]
+table << [:exchange_rate, rate] if rate != 1.0
+table << []
+table << [:Type, :Memory, :ECU, :Storage, :Network, "/hour", "/month", "best/hour", "best/month", :savings]
+
+InstanceType.all.sort_by { |i| i.ecu || 0 }.each do |type|
+  rates = prices[type.type].select do
+    |p| p.region == region && p.hourly_rate > 0 
+  end.sort_by(&:monthly_rate)
+  min_price = rates.first if rates.count > 1
+  max_price = rates.last
+  savings = if min_price && max_price && max_price.monthly_rate && min_price.monthly_rate
+    "%.02f%%" % [100 - (100.0 * min_price.monthly_rate / max_price.monthly_rate)]
+  else
+    "-"
+  end
+  row = [
+    type.type,
+    type.memory,
+    type.ecu || "variable",
+    type.storage,
+    type.network_performance,
+  ] + price_columns(max_price, rate) + price_columns(min_price, rate) + [savings]
+  table << row
+end
+
+puts table

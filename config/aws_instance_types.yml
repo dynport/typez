@@ -1,0 +1,154 @@
+---
+- :family: General purpose
+  :type: m1.small
+  :arch: 32-bit or64-bit
+  :vcpu: 1
+  :ecu: 1.0
+  :memory: 1.7
+  :storage: 1 x 160
+  :ebs_optimizable: ! '-'
+  :network_performance: Low
+- :family: General purpose
+  :type: m1.medium
+  :arch: 32-bit or64-bit
+  :vcpu: 1
+  :ecu: 2.0
+  :memory: 3.75
+  :storage: 1 x 410
+  :ebs_optimizable: ! '-'
+  :network_performance: Moderate
+- :family: General purpose
+  :type: m1.large
+  :arch: 64-bit
+  :vcpu: 2
+  :ecu: 4.0
+  :memory: 7.5
+  :storage: 2 x 420
+  :ebs_optimizable: 'Yes'
+  :network_performance: Moderate
+- :family: General purpose
+  :type: m1.xlarge
+  :arch: 64-bit
+  :vcpu: 4
+  :ecu: 8.0
+  :memory: 15.0
+  :storage: 2 x 840
+  :ebs_optimizable: 'Yes'
+  :network_performance: High
+- :family: General purpose
+  :type: m3.xlarge
+  :arch: 64-bit
+  :vcpu: 4
+  :ecu: 13.0
+  :memory: 15.0
+  :storage: EBS only
+  :ebs_optimizable: 'Yes'
+  :network_performance: Moderate
+- :family: General purpose
+  :type: m3.2xlarge
+  :arch: 64-bit
+  :vcpu: 8
+  :ecu: 26.0
+  :memory: 30.0
+  :storage: EBS only
+  :ebs_optimizable: 'Yes'
+  :network_performance: High
+- :family: Compute optimized
+  :type: c1.medium
+  :arch: 32-bit or64-bit
+  :vcpu: 2
+  :ecu: 5.0
+  :memory: 1.7
+  :storage: 1 x 350
+  :ebs_optimizable: ! '-'
+  :network_performance: Moderate
+- :family: Compute optimized
+  :type: c1.xlarge
+  :arch: 64-bit
+  :vcpu: 8
+  :ecu: 20.0
+  :memory: 7.0
+  :storage: 4 x 420
+  :ebs_optimizable: 'Yes'
+  :network_performance: High
+- :family: Compute optimized
+  :type: cc2.8xlarge
+  :arch: 64-bit
+  :vcpu: 
+  :ecu: 88.0
+  :memory: 60.5
+  :storage: 4 x 840
+  :ebs_optimizable: ! '-'
+  :network_performance: 10 Gigabit
+- :family: Memory optimized
+  :type: m2.xlarge
+  :arch: 64-bit
+  :vcpu: 2
+  :ecu: 6.5
+  :memory: 17.1
+  :storage: 1 x 420
+  :ebs_optimizable: ! '-'
+  :network_performance: Moderate
+- :family: Memory optimized
+  :type: m2.2xlarge
+  :arch: 64-bit
+  :vcpu: 4
+  :ecu: 13.0
+  :memory: 34.2
+  :storage: 1 x 850
+  :ebs_optimizable: 'Yes'
+  :network_performance: Moderate
+- :family: Memory optimized
+  :type: m2.4xlarge
+  :arch: 64-bit
+  :vcpu: 8
+  :ecu: 26.0
+  :memory: 68.4
+  :storage: 2 x 840
+  :ebs_optimizable: 'Yes'
+  :network_performance: High
+- :family: Memory optimized
+  :type: cr1.8xlarge
+  :arch: 64-bit
+  :vcpu: 
+  :ecu: 88.0
+  :memory: 244.0
+  :storage: 2 x 120 SSD
+  :ebs_optimizable: ! '-'
+  :network_performance: 10 Gigabit
+- :family: Storage optimized
+  :type: hi1.4xlarge
+  :arch: 64-bit
+  :vcpu: 16
+  :ecu: 35.0
+  :memory: 60.5
+  :storage: 2 x 1,024 SSD
+  :ebs_optimizable: ! '-'
+  :network_performance: 10 Gigabit
+- :family: Storage optimized
+  :type: hs1.8xlarge
+  :arch: 64-bit
+  :vcpu: 16
+  :ecu: 35.0
+  :memory: 117.0
+  :storage: 24 x 2,048
+  :ebs_optimizable: ! '-'
+  :network_performance: 10 Gigabit
+- :family: Micro instances
+  :type: t1.micro
+  :arch: 32-bit or64-bit
+  :vcpu: 1
+  :ecu: 
+  :memory: 0.615
+  :storage: EBS only
+  :ebs_optimizable: ! '-'
+  :network_performance: Very Low
+- :family: GPU instances
+  :type: cg1.4xlarge
+  :arch: 64-bit
+  :vcpu: 
+  :ecu: 33.5
+  :memory: 22.5
+  :storage: 2 x 840
+  :ebs_optimizable: ! '-'
+  :network_performance: 10 Gigabit
