@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 $:.push(File.expand_path("../../lib", __FILE__))
-require "typez/aws/compute/price"
-require "typez/aws/compute/instance_type"
+require "typez/aws/compute/instance_price"
 include Typez::AWS::Compute
 
 region = "eu-west-1"
 rate = 1.0
 refresh = false
+
 require "optparse"
 opts = OptionParser.new do |o|
   o.on("-r REGION", "--region", "AWS region to use. default: #{region}") do |value|
@@ -49,24 +49,17 @@ table << [:exchange_rate, rate] if rate != 1.0
 table << []
 table << [:Type, :Memory, :ECU, :Storage, :Network, "/hour", "/month", "best/hour", "best/month", :savings]
 
-InstanceType.all.sort_by { |i| i.ecu || 0 }.each do |type|
-  rates = prices[type.type].select do
-    |p| p.region == region && p.hourly_rate > 0 
-  end.sort_by(&:monthly_rate)
-  min_price = rates.first if rates.count > 1
-  max_price = rates.last
-  savings = if min_price && max_price && max_price.monthly_rate && min_price.monthly_rate
-    "%.02f%%" % [100 - (100.0 * min_price.monthly_rate / max_price.monthly_rate)]
-  else
-    "-"
-  end
+InstancePrice.for_region(region).sort_by { |i| i.instance_type.ecu || 0 }.each do |price|
   row = [
-    type.type,
-    type.memory,
-    type.ecu || "variable",
-    type.storage,
-    type.network_performance,
-  ] + price_columns(max_price, rate) + price_columns(min_price, rate) + [savings]
+    price.instance_type.type,
+    price.instance_type.memory,
+    price.instance_type.ecu || "variable",
+    price.instance_type.storage,
+    price.instance_type.network_performance,
+  ]
+  row += price_columns(price.max_price, rate)
+  row += price_columns(price.min_price, rate)
+  row << ("%.02f%%" % [100 * price.savings])
   table << row
 end
 

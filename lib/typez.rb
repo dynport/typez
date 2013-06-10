@@ -1,5 +1,9 @@
 require "typez/version"
 
 module Typez
-  # Your code goes here...
+  class << self
+    def cache_dir
+      @cache_dir || File.expand_path("~/.typez")
+    end
+  end
 end

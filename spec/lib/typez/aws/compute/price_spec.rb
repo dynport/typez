@@ -11,7 +11,7 @@ describe "Typez::AWS::Compute::Price" do
 
     subject(:prices) { clazz.from_json_attributes(MultiJson.load(json)) }
     it { should be_kind_of(Array) }
-    it { subject.count.should eq(104) }
+    it { subject.count.should eq(117) }
 
     describe "#first" do
       subject(:first) { prices.first }
